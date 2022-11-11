@@ -1,0 +1,31 @@
+server:
+  port: 9900
+
+spring:
+  kafka:
+    bootstrap-servers: lczA:9092,lczB:9092,lczC:9092
+    producer:
+      retries: 5
+      acks: all
+      batch-size: 16384
+      buffer-memory: 33554432
+      transaction-id-prefix: transaction-id-
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      properties:
+        enable:
+          idempotence: true
+
+    consumer:
+      group-id: default-group
+      auto-offset-reset: latest
+      enable-auto-commit: true
+      auto-commit-interval: 100
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      properties:
+        isolation:
+          level: read_committed
+
+#    listener:
+#      ack-mode: manual_immediate
